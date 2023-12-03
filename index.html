@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMI Calculator</title>
+  
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="app">
+    <div class="calculator-container">
+      <h1>EMI Calculator</h1>
+
+      <div class="form-group">
+        <label for="loanAmount">Loan Amount:</label>
+        <input type="number" v-model="loanAmount" id="loanAmount" placeholder="Enter loan amount" required> 
+      </div>
+      <br>
+
+      <div class="form-group">
+        <label for="interestRate">Interest Rate (%):</label>
+        <input type="number" v-model="interestRate" id="interestRate" placeholder="Enter interest rate" required>
+      </div> <br>
+
+      <div class="form-group">
+        <label for="loanTerm">Loan Term (months):</label>
+        <input type="number" v-model="loanTerm" id="loanTerm" placeholder="Enter loan term" required>
+      </div> <br>
+
+      <div class="form-group">
+        <button @click="calculateEMI">Calculate EMI</button>
+      </div> <br>
+
+      <div v-if="emi">
+        <div class="result">
+          <h2>EMI: {{ emi.toFixed(2) }}</h2>
+          <h3>Total Interest Payable: {{ totalInterest.toFixed(2) }}</h3>
+          <h3>Total Payable: {{ totalPayable.toFixed(2) }}</h3>
+        </div>
+
+        <div class="chart-container">
+          <canvas id="pieChart"  width="300" height="300"></canvas>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Payment #</th>
+              <th>EMI</th>
+              <th>Principal</th>
+              <th>Interest</th>
+              <th>Balance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="payment in amortizationSchedule" :key="payment.paymentNumber">
+              <td>{{ payment.paymentNumber }}</td>
+              <td>{{ payment.emi.toFixed(2) }}</td>
+              <td>{{ payment.principal.toFixed(2) }}</td>
+              <td>{{ payment.interest.toFixed(2) }}</td>
+              <td>{{ payment.balance.toFixed(2) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
